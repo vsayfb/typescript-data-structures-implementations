@@ -1,0 +1,24 @@
+{
+  "name": "typescript-data-structures",
+  "author": "vsayfb",
+  "description": "Data structures implementations in Typescript",
+  "license": "ISC",
+  "version": "1.0.0",
+  "main": "src/main.ts",
+  "scripts": {
+    "start": "nodemon src/main.ts",
+    "test": "jest --watchAll --maxWorkers=1"
+  },
+  "keywords": [
+    "data-structures",
+    "typescript",
+    "linked-list"
+  ],
+  "devDependencies": {
+    "@types/jest": "^29.5.1",
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1"
+  }
+}
