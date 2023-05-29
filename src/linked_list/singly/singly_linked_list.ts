@@ -1,20 +1,19 @@
-import { LinkedList } from "../../interfaces/linked_list";
 import { HasEqualMethod } from "../../interfaces/has_equal_method";
-
 import { NoSuchElement } from "../../errors/no_such_element";
 import { EmptyLinkedList } from "../../errors/empty_linked_list";
-
 import { Node } from "./node";
+import { LinkedList } from "../base/linked_list";
+import { LinkedListInterface } from "../../interfaces/linked_list";
 
 export class SinglyLinkedList<
-  T extends HasEqualMethod<T> | number | string | boolean
-> implements LinkedList<T>
+    T extends HasEqualMethod<T> | number | string | boolean
+  >
+  extends LinkedList<T, Node<T>>
+  implements LinkedListInterface<T>
 {
-  private head: Node<T> | null = null;
-
-  private size: number = 0;
-
-  public constructor() {}
+  public constructor() {
+    super();
+  }
 
   public addFirst(data: T): void {
     const node = new Node(data);
@@ -43,7 +42,7 @@ export class SinglyLinkedList<
 
     let current = this.head;
 
-    while (current && current.getNext()) {
+    while (current.getNext()) {
       current = current.getNext() as Node<T>;
     }
 
@@ -82,34 +81,32 @@ export class SinglyLinkedList<
     return remove;
   }
 
-  public getFirst(): T {
-    return this.head ? this.head.getData() : (null as unknown as T);
-  }
-
   public getLast(): T {
-    if (!this.head) return null as unknown as T;
-
     let current = this.head;
 
-    while (current.getNext()) current = current.getNext() as Node<T>;
+    while (current && current.getNext()) current = current.getNext() as Node<T>;
 
-    return current.getData();
+    return current ? current.getData() : (null as unknown as T);
   }
 
   public addBefore(data: T, before: T): void {
-    if (!this.head) throw new EmptyLinkedList();
+    const head = this.getFirst();
 
-    if (this.compare(this.getFirst(), before)) {
+    if (head === null) throw new EmptyLinkedList();
+
+    if (this.compare(head, before)) {
       return this.addFirst(data);
     }
 
     let current: Node<T> | null = this.head;
 
     while (current) {
-      if (this.compare(current.getNext()?.getData() as T, before)) {
+      const currentNext = current.getNext();
+
+      if (currentNext && this.compare(currentNext.getData(), before)) {
         const node = new Node(data);
 
-        node.setNext(current.getNext());
+        node.setNext(currentNext);
 
         current.setNext(node);
 
@@ -136,14 +133,23 @@ export class SinglyLinkedList<
     let current: Node<T> | null = this.head;
 
     while (current) {
-      if (this.compare(current.getNext()?.getNext()?.getData() as T, before)) {
-        const removed = current.getNext()?.getData();
+      const currentNext = current.getNext();
 
-        current.setNext(current.getNext()?.getNext() as Node<T>);
+      if (currentNext) {
+        const currentNextNext = currentNext.getNext();
 
-        this.size--;
+        if (
+          currentNextNext &&
+          this.compare(currentNextNext.getData(), before)
+        ) {
+          const removed = currentNext.getData();
 
-        return removed as T;
+          current.setNext(currentNextNext);
+
+          this.size--;
+
+          return removed;
+        }
       }
 
       current = current.getNext();
@@ -185,36 +191,21 @@ export class SinglyLinkedList<
 
     while (current) {
       if (this.compare(current.getData(), after)) {
-        let removed = current.getNext()?.getData();
+        const currentNext = current.getNext();
 
-        // item is tail
-        if (!removed) throw new NoSuchElement();
+        if (!currentNext) throw new NoSuchElement();
 
-        current.setNext(current.getNext()?.getNext() as Node<T>);
+        current.setNext(currentNext.getNext());
 
         this.size--;
 
-        return removed;
+        return currentNext.getData();
       }
 
       current = current.getNext() as Node<T>;
     }
 
     throw new NoSuchElement();
-  }
-
-  public find(data: T): T | null {
-    if (this.isEmpty()) throw new EmptyLinkedList();
-
-    let current = this.head;
-
-    while (current) {
-      if (this.compare(current.getData(), data)) return current.getData();
-
-      current = current.getNext();
-    }
-
-    return null;
   }
 
   public remove(data: T): T | null {
@@ -225,16 +216,16 @@ export class SinglyLinkedList<
     let current: Node<T> | null = this.head;
 
     while (current && current.getNext()) {
-      if (this.compare(current.getNext()?.getData() as T, data)) {
-        const remove = current.getNext()?.getData() as T;
+      const currentNext = current.getNext();
 
-        const next = current.getNext()?.getNext() as Node<T>;
+      if (currentNext && this.compare(currentNext.getData(), data)) {
+        const currentNextNext = currentNext.getNext();
 
-        current.setNext(next);
+        current.setNext(currentNextNext);
 
         this.size--;
 
-        return remove;
+        return currentNext.getData();
       }
 
       current = current.getNext();
@@ -243,45 +234,7 @@ export class SinglyLinkedList<
     return null;
   }
 
-  public getSize(): number {
-    return this.size;
-  }
-
-  public toArray(): T[] {
-    if (this.isEmpty()) return [];
-
-    let current = this.head;
-
-    let i = 0;
-
-    const arr: T[] = [];
-
-    while (current) {
-      arr[i++] = current.getData();
-
-      current = current.getNext() as Node<T>;
-    }
-
-    return arr;
-  }
-
   public isEmpty(): boolean {
     return !this.head;
-  }
-
-  private compare(a: T, b: T) {
-    if (typeof a === "object" && typeof b === "object") {
-      return a.equals(b);
-    } else return a === b;
-  }
-
-  public log() {
-    let node = this.head;
-
-    while (node) {
-      console.log(node.getData());
-
-      node = node.getNext();
-    }
   }
 }

@@ -1,4 +1,7 @@
 services:
   app:
     container_name: app
+    volumes:
+      - .:/app
     build: .
+    command: bash -c "npm run test"

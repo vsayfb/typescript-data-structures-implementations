@@ -1,22 +1,16 @@
+import { Node as SinglyNode } from "../singly/node";
+
 export class Node<T> {
-  private previous: Node<T> | null = null;
   private next: Node<T> | null = null;
+  private previous: Node<T> | null = null;
   private data: T;
 
   constructor(data: T) {
     this.data = data;
   }
 
-  public setNext(next: Node<T> | null): void {
-    this.next = next;
-  }
-
   public setPrevious(prev: Node<T> | null): void {
     this.previous = prev;
-  }
-
-  public getNext(): Node<T> | null {
-    return this.next;
   }
 
   public getPrevious(): Node<T> | null {
@@ -27,7 +21,15 @@ export class Node<T> {
     return this.data;
   }
 
-  public setData(data: T): void {
+  public setData(data: T) {
     this.data = data;
+  }
+
+  public getNext(): Node<T> | null {
+    return this.next;
+  }
+
+  public setNext(next: Node<T> | null) {
+    this.next = next;
   }
 }

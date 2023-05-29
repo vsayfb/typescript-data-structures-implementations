@@ -1,18 +1,21 @@
 import { EmptyLinkedList } from "../../errors/empty_linked_list";
 import { NoSuchElement } from "../../errors/no_such_element";
 import { HasEqualMethod } from "../../interfaces/has_equal_method";
-import { LinkedList } from "../../interfaces/linked_list";
+import { LinkedListInterface } from "../../interfaces/linked_list";
+import { LinkedList } from "../base/linked_list";
 import { Node } from "./node";
 
 export class DoublyLinkedList<
-  T extends HasEqualMethod<T> | number | string | boolean
-> implements LinkedList<T>
+    T extends HasEqualMethod<T> | number | string | boolean
+  >
+  extends LinkedList<T, Node<T>>
+  implements LinkedListInterface<T>
 {
-  private head: Node<T> | null = null;
-
   private tail: Node<T> | null = null;
 
-  private size = 0;
+  public constructor() {
+    super();
+  }
 
   public addFirst(data: T): void {
     const node = new Node(data);
@@ -60,7 +63,7 @@ export class DoublyLinkedList<
 
     const currentTail = this.tail;
 
-    currentTail?.setNext(node);
+    if (currentTail) currentTail.setNext(node);
 
     node.setPrevious(currentTail);
 
@@ -115,6 +118,8 @@ export class DoublyLinkedList<
         node.setNext(current);
 
         current.setPrevious(node);
+
+        this.size++;
 
         return;
       }
@@ -215,53 +220,11 @@ export class DoublyLinkedList<
     throw new NoSuchElement();
   }
 
-  public find(data: T): T | null {
-    if (this.isEmpty()) throw new EmptyLinkedList();
-
-    let current = this.head;
-
-    while (current) {
-      if (this.compare(current.getData(), data)) return current.getData();
-
-      current = current.getNext();
-    }
-
-    return null;
-  }
-
   public remove(data: T): T | null {
     throw new Error("Method not implemented.");
   }
 
-  public toArray(): T[] {
-    if (this.isEmpty()) return [];
-
-    let current = this.head;
-
-    let i = 0;
-
-    const arr: T[] = [];
-
-    while (current) {
-      arr[i++] = current.getData();
-
-      current = current.getNext() as Node<T>;
-    }
-
-    return arr;
-  }
-
   public isEmpty(): boolean {
     return this.head === null;
-  }
-
-  public getSize(): number {
-    return this.size;
-  }
-
-  private compare(a: T, b: T) {
-    if (typeof a === "object" && typeof b === "object") {
-      return a.equals(b);
-    } else return a === b;
   }
 }

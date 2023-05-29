@@ -185,20 +185,6 @@ describe("DoublyLinkedList", () => {
     });
   });
 
-  describe("getFirst", () => {
-    it("should return null in an empty list", () => {
-      expect(list.getFirst()).toBeNull();
-    });
-
-    it("should return item that beginning of the list", () => {
-      list.addFirst(1);
-      list.addFirst(2);
-      list.addFirst(3);
-
-      expect(list.getFirst()).toBe(3);
-    });
-  });
-
   describe("getLast", () => {
     it("should return null in an empty list", () => {
       expect(list.getLast()).toBeNull();

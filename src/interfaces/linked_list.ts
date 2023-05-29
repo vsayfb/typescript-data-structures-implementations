@@ -1,9 +1,9 @@
-export interface LinkedList<T> {
+export interface LinkedListInterface<T> {
   addFirst(data: T): void;
   removeFirst(): T;
   addLast(data: T): void;
   removeLast(): T;
-  getFirst(): T;
+  getFirst(): T | null;
   getLast(): T;
   addBefore(data: T, before: T): void;
   removeBefore(before: T): T;
