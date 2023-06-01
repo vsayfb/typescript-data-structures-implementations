@@ -1,7 +1,7 @@
-import { EmptyLinkedList } from "../../errors/empty_linked_list";
+import { EmptyLinkedList } from "../errors/empty_linked_list";
 import { NoSuchElement } from "../../errors/no_such_element";
 import { HasEqualMethod } from "../../interfaces/has_equal_method";
-import { LinkedListInterface } from "../../interfaces/linked_list";
+import { LinkedListInterface } from "../interfaces/linked_list";
 import { LinkedList } from "../base/linked_list";
 import { Node } from "./node";
 

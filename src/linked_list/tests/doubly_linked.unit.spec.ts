@@ -1,4 +1,4 @@
-import { EmptyLinkedList } from "../../errors/empty_linked_list";
+import { EmptyLinkedList } from "../errors/empty_linked_list";
 import { NoSuchElement } from "../../errors/no_such_element";
 import { DoublyLinkedList } from "../doubly/doubly_linked_list";
 import { Node } from "../doubly/node";

@@ -1,9 +1,9 @@
 import { HasEqualMethod } from "../../interfaces/has_equal_method";
 import { NoSuchElement } from "../../errors/no_such_element";
-import { EmptyLinkedList } from "../../errors/empty_linked_list";
+import { EmptyLinkedList } from "../errors/empty_linked_list";
 import { Node } from "./node";
 import { LinkedList } from "../base/linked_list";
-import { LinkedListInterface } from "../../interfaces/linked_list";
+import { LinkedListInterface } from "../interfaces/linked_list";
 
 export class SinglyLinkedList<
     T extends HasEqualMethod<T> | number | string | boolean

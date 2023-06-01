@@ -1,4 +1,4 @@
-import { EmptyLinkedList } from "../../errors/empty_linked_list";
+import { EmptyLinkedList } from "../errors/empty_linked_list";
 import { HasEqualMethod } from "../../interfaces/has_equal_method";
 
 export abstract class LinkedList<
