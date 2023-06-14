@@ -231,7 +231,7 @@ describe("SinglyLinkedList", () => {
       spy.mockReset();
     });
 
-    it.only("should correctly works with multiple items", () => {
+    it("should correctly works with multiple items", () => {
       list.addFirst(0);
 
       for (let i = 0, j = 1; i < 1000; i++, j++) list.addBefore(j, i);
